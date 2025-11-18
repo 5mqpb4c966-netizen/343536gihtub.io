@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>芮芮 - 专属异地陪聊女友</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .chat-container {
+            width: 100%;
+            max-width: 400px;
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 80vh;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            padding: 20px;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+        
+        .profile-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid white;
+            margin: 0 auto 10px;
+            background-color: #fff;
+            overflow: hidden;
+        }
+        
+        .profile-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .name {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .status {
+            font-size: 14px;
+            opacity: 0.9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #4cd964;
+            border-radius: 50%;
+        }
+        
+        .chat-area {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .message {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            line-height: 1.4;
+            position: relative;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .received {
+            align-self: flex-start;
+            background-color: #f0f0f0;
+            border-bottom-left-radius: 5px;
+        }
+        
+        .sent {
+            align-self: flex-end;
+            background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .time {
+            font-size: 11px;
+            color: #999;
+            margin-top: 5px;
+            text-align: right;
+        }
+        
+        .input-area {
+            padding: 15px;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .message-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            outline: none;
+            font-size: 14px;
+        }
+        
+        .send-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            border: none;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .send-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .typing-indicator {
+            align-self: flex-start;
+            background-color: #f0f0f0;
+            padding: 10px 15px;
+            border-radius: 18px;
+            border-bottom-left-radius: 5px;
+            display: none;
+        }
+        
+        .typing-dots {
+            display: flex;
+            gap: 3px;
+        }
+        
+        .typing-dots span {
+            width: 6px;
+            height: 6px;
+            background-color: #999;
+            border-radius: 50%;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+        
+        .typing-dots span:nth-child(1) { animation-delay: 0s; }
+        .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+        
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-5px); }
+        }
+        
+        .info-box {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 20px;
+            font-size: 13px;
+            color: #666;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="header">
+            <div class="profile-img">
+                <!-- 头像占位 -->
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="40" r="20" fill="#ff9a9e" />
+                    <circle cx="50" cy="100" r="40" fill="#fad0c4" />
+                </svg>
+            </div>
+            <div class="name">芮芮</div>
+            <div class="status">
+                <div class="status-dot"></div>
+                <span>在线 · 距离下次见面还有12天</span>
+            </div>
+        </div>
+        
+        <div class="info-box">
+            芮芮正在大学图书馆，今天课程不多，可以多陪啊文聊会儿天 ❤️
+        </div>
+        
+        <div class="chat-area" id="chatArea">
+            <!-- 聊天消息将通过JavaScript动态添加 -->
+        </div>
+        
+        <div class="typing-indicator" id="typingIndicator">
+            <div class="typing-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="input-area">
+            <input type="text" class="message-input" id="messageInput" placeholder="输入消息给芮芮...">
+            <button class="send-btn" id="sendBtn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M22 2L11 13" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatArea = document.getElementById('chatArea');
+            const messageInput = document.getElementById('messageInput');
+            const sendBtn = document.getElementById('sendBtn');
+            const typingIndicator = document.getElementById('typingIndicator');
+            
+            // 初始消息
+            const initialMessages = [
+                {
+                    text: "啊文，今天工作辛苦吗？我刚上完课，正在图书馆复习呢~",
+                    time: "10:30",
+                    type: "received"
+                },
+                {
+                    text: "还好，今天家里事情不多。你在图书馆注意休息，别太累了。",
+                    time: "10:32",
+                    type: "sent"
+                },
+                {
+                    text: "知道啦！你总是这么关心我❤️ 对了，我最近学会了一道新菜，下次见面做给你吃！",
+                    time: "10:33",
+                    type: "received"
+                },
+                {
+                    text: "真的吗？好期待！你最近在学校一切都好吗？",
+                    time: "10:35",
+                    type: "sent"
+                }
+            ];
+            
+            // 芮芮的回复库
+            const ruiReplies = [
+                "今天上课老师讲的内容有点难，不过我记了详细的笔记，可以分享给你看~",
+                "刚刚在食堂吃了你最爱吃的糖醋排骨，想起你了呢！",
+                "我们这周末有社团活动，是去郊外写生，我会多拍些照片发给你！",
+                "最近天气转凉了，你要记得多穿点衣服，别感冒了。",
+                "我最近在看一本很有意思的书，是关于家庭传承的，感觉很适合你现在的情况。",
+                "你知道吗？我们学校图书馆的窗边位置可以看到很美的日落，下次视频我给你看！",
+                "今天和室友聊到你，她们都说你是个很负责任的人呢！",
+                "我刚刚算了一下，我们还有12天就能见面了，好期待呀！",
+                "你家里的事情处理得怎么样了？需要我帮忙查什么资料吗？",
+                "今天课堂上学到了很多关于企业管理的内容，感觉对你守家业会有帮助~"
+            ];
+            
+            // 初始化聊天记录
+            initialMessages.forEach(msg => {
+                addMessage(msg.text, msg.time, msg.type);
+            });
+            
+            // 发送消息功能
+            function sendMessage() {
+                const message = messageInput.value.trim();
+                if (message === '') return;
+                
+                const now = new Date();
+                const timeString = `${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
+                
+                // 添加用户消息
+                addMessage(message, timeString, 'sent');
+                messageInput.value = '';
+                
+                // 显示芮芮正在输入
+                typingIndicator.style.display = 'block';
+                chatArea.scrollTop = chatArea.scrollHeight;
+                
+                // 模拟芮芮回复
+                setTimeout(() => {
+                    typingIndicator.style.display = 'none';
+                    const replyTime = new Date();
+                    const replyTimeString = `${replyTime.getHours()}:${replyTime.getMinutes().toString().padStart(2, '0')}`;
+                    const randomReply = ruiReplies[Math.floor(Math.random() * ruiReplies.length)];
+                    addMessage(randomReply, replyTimeString, 'received');
+                }, 2000);
+            }
+            
+            // 添加消息到聊天区域
+            function addMessage(text, time, type) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${type}`;
+                messageDiv.innerHTML = `
+                    <div>${text}</div>
+                    <div class="time">${time}</div>
+                `;
+                chatArea.appendChild(messageDiv);
+                chatArea.scrollTop = chatArea.scrollHeight;
+            }
+            
+            // 事件监听
+            sendBtn.addEventListener('click', sendMessage);
+            
+            messageInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+            
+            // 自动问候
+            setTimeout(() => {
+                const now = new Date();
+                const timeString = `${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
+                addMessage("啊文，我想你了~ 你今天过得怎么样？", timeString, 'received');
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
